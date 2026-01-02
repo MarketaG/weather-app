@@ -1,0 +1,7 @@
+:root {
+  --bg-primary: #f5f7fa;
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #242424;
+}
