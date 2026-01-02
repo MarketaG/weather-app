@@ -1,8 +1,12 @@
+import { Navigation } from "./components/Navigation";
+
 function App() {
   return (
     <>
       <div className="app">
-        <header className="navigation">Navigation</header>
+        <header className="header">
+          <Navigation />
+        </header>
 
         <main className="main">
           <section className="section-header">Section Header</section>

@@ -1,0 +1,107 @@
+@use "../styles/variables.scss" as *;
+
+.navigation {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  width: 100%;
+  min-height: 64px;
+
+  background-color: var(--bg-secondary);
+  box-shadow: var(--shadow);
+
+  display: flex;
+  align-items: center;
+
+  .nav-content {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  /* Logo */
+  .logo-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .logo-image {
+    height: 48px;
+    width: auto;
+    display: block;
+  }
+
+  /*
+    Accessibility
+  */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /*
+    Drops
+  */
+
+  .logo-rain {
+    position: absolute;
+    top: -30px;
+    left: 20px;
+    pointer-events: none;
+  }
+
+  .drop {
+    position: absolute;
+    width: 3px;
+    height: 14px;
+    background-color: currentColor;
+    border-radius: 2px;
+    opacity: 0;
+
+    animation: drop-fall 1s ease-out forwards;
+  }
+
+  .drop:nth-child(1) {
+    left: 10px;
+    animation-delay: 0s;
+  }
+
+  .drop:nth-child(2) {
+    left: 30px;
+    animation-delay: 0.15s;
+  }
+
+  .drop:nth-child(3) {
+    left: 50px;
+    animation-delay: 0.3s;
+  }
+}
+
+/*
+  Animation
+*/
+@keyframes drop-fall {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}

@@ -18,12 +18,9 @@ body {
   overflow: hidden;
   position: relative;
 
-  .navigation {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    padding: 0 $spacing-lg;
+  .header {
+    width: 100%;
+    height: 64px;
   }
 
   .main {
