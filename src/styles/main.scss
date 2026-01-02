@@ -6,7 +6,173 @@
   box-sizing: border-box;
 }
 
+html,
 body {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-primary);
+  height: 100%;
+}
+
+.app {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 64px 1fr;
+  overflow: hidden;
+  position: relative;
+
+  .navigation {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    padding: 0 $spacing-lg;
+  }
+
+  .main {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 0;
+    overflow: hidden;
+
+    .section-header {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      padding: $spacing-sm $spacing-lg;
+      margin: $spacing-sm $spacing-lg 0;
+    }
+
+    .main-grid {
+      display: grid;
+      height: 100%;
+      grid-template-columns: 3fr 1fr;
+      grid-template-rows: minmax(0, 2fr) minmax(0, 1fr);
+      gap: $spacing-lg;
+      padding: $spacing-lg;
+      min-height: 0;
+      overflow: hidden;
+
+      .weather-main {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+        background-color: var(--bg-primary);
+        padding: $spacing-lg;
+        min-height: 0;
+      }
+
+      .forecast-sidebar {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+        background-color: var(--bg-primary);
+        padding: $spacing-lg;
+        overflow-y: auto;
+        min-height: 0;
+      }
+
+      .hourly-chart {
+        grid-column: 1 / -1;
+        grid-row: 2 / 3;
+        background-color: var(--bg-primary);
+        padding: $spacing-lg;
+        min-height: 0;
+      }
+    }
+  }
+
+  /*
+     FOOTER (OVERLAY)
+  */
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 48px;
+
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+
+    pointer-events: none;
+  }
+
+  /*
+     FOOTER HOVER TRIGGER
+  */
+
+  .footer-trigger {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 10px;
+    z-index: 10;
+  }
+
+  .footer-trigger:hover + .footer,
+  .footer:hover {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+/*
+   TABLET
+*/
+@media (max-width: 1024px) {
+  .app {
+    .main {
+      .main-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        height: auto;
+
+        .weather-main,
+        .forecast-sidebar,
+        .hourly-chart {
+          grid-column: 1;
+          grid-row: auto;
+        }
+      }
+    }
+  }
+}
+
+/*
+   MOBILE
+*/
+@media (max-width: 640px) {
+  .app {
+    .navigation {
+      padding: 0 $spacing-md;
+    }
+
+    .main {
+      .section-header {
+        padding: $spacing-sm $spacing-md;
+        margin: $spacing-sm $spacing-md 0;
+      }
+
+      .main-grid {
+        padding: $spacing-md;
+        gap: $spacing-md;
+      }
+    }
+
+    /* footer always visible on mobile devices */
+    .footer {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .footer-trigger {
+      display: none;
+    }
+  }
 }

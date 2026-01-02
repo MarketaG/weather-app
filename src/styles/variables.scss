@@ -1,7 +1,13 @@
 :root {
   --bg-primary: #f5f7fa;
+  --text-primary: #1a202c;
 }
 
 :root[data-theme="dark"] {
   --bg-primary: #242424;
 }
+
+$spacing-sm: 12px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;

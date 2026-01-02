@@ -1,7 +1,22 @@
 function App() {
   return (
     <>
-      <div>Weather App</div>
+      <div className="app">
+        <header className="navigation">Navigation</header>
+
+        <main className="main">
+          <section className="section-header">Section Header</section>
+
+          <div className="main-grid">
+            <section className="weather-main">Weather Main</section>
+            <aside className="forecast-sidebar">Forecast Sidebar</aside>
+            <section className="hourly-chart">Hourly Chart</section>
+          </div>
+        </main>
+
+        <div className="footer-trigger"></div>
+        <footer className="footer">Footer content</footer>
+      </div>
     </>
   );
 }
