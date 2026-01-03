@@ -12,6 +12,7 @@ export type City = {
 };
 
 export type Weather = {
+  dt: number;
   weather: {
     id: number;
     main: string; // "Snow", "Rain", "Clear", ...
