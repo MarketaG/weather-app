@@ -1,4 +1,4 @@
-import type { City } from "../types/weather";
+import type { City, Weather } from "../types/weather";
 
 // I. mock data
 export const DEFAULT_CITY: City = {
@@ -65,3 +65,27 @@ export const mockRecentCities: City[] = [
     coord: { lat: 49.216671, lon: 17.66667 },
   },
 ];
+
+// IV. mock data
+export const mockWeather = (): Weather => ({
+  weather: [
+    {
+      id: 802,
+      main: "Clouds",
+      description: "partly cloudy",
+      icon: "03d",
+    },
+  ],
+  main: {
+    temp: 295.15, // 22 °C
+    feels_like: 294.15, // 21 °C
+    humidity: 65,
+  },
+  wind: {
+    speed: 12,
+  },
+  sys: {
+    sunrise: 1714281840, // UNIX timestamp (s)
+    sunset: 1714333500,
+  },
+});
