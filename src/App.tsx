@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navigation } from "./components/Navigation";
 import { SectionHeader } from "./components/SectionHeader";
+import { ForecastSidebar } from "./components/ForecastSidebar";
 import { WeatherMain } from "./components/WeatherMain";
 import { DEFAULT_CITY, mockWeather } from "../src/data/mockData";
 import type { City } from "./types/weather";
@@ -10,9 +11,14 @@ import type { City } from "./types/weather";
  */
 function App() {
   const [currentCity, setCurrentCity] = useState<City>(DEFAULT_CITY);
+  const [selectedDay, setSelectedDay] = useState(1); // TODO
 
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
+  };
+
+  const handleDaySelect = (id: number) => {
+    setSelectedDay(id);
   };
 
   return (
@@ -33,9 +39,15 @@ function App() {
           <div className="content-container">
             <div className="main-grid">
               <section className="weather-main">
-                <WeatherMain weather={mockWeather()} />
+                <WeatherMain weather={mockWeather[0]} />
               </section>
-              <aside className="forecast-sidebar">Forecast Sidebar</aside>
+              <aside className="forecast-sidebar">
+                <ForecastSidebar
+                  forecasts={mockWeather}
+                  selectedDay={selectedDay}
+                  onDaySelect={handleDaySelect}
+                />
+              </aside>
               <section className="hourly-chart">Hourly Chart</section>
             </div>
           </div>
