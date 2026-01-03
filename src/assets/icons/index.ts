@@ -4,3 +4,8 @@ export { ChevronDown } from "./ChevronDown";
 export { MagnifyingGlass } from "./MagnifyingGlass";
 export { Home } from "./Home";
 export { ArrowPath } from "./ArrowPath";
+export { CloudIcon } from "./CloudIcon";
+export { WindyIcon } from "./WindyIcon";
+export { HumidityIcon } from "./HumidityIcon";
+export { SunsetIcon } from "./SunsetIcon";
+export { SunriseIcon } from "./SunriseIcon";
