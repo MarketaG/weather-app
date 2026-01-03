@@ -1,17 +1,42 @@
 :root {
-  --bg-primary: #f5f7fa;
-  --bg-secondary: #ffffff;
-  --text-primary: #1a202c;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f7f8;
+  --bg-tertiary: #eceef0;
+
+  --text-primary: #303233;
+  --text-tertiary: #718096;
+  --text-subtitle: #6c7880;
+
+  --border-color: #f6f7f8;
+
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 3px 6px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 :root[data-theme="dark"] {
   --bg-primary: #242424;
 }
 
+$text-xs: 12px;
+$text-sm: 14px;
+$text-base: 16px;
+
+$font-light: 300;
+$font-semibold: 600;
+
 $transition-speed: 0.3s;
 
+$spacing-xxs: 2px;
+$spacing-xs: 8px;
 $spacing-sm: 12px;
 $spacing-md: 16px;
 $spacing-lg: 24px;
 $spacing-xl: 32px;
+
+$icon-size-sm: 16px;
+$icon-size-md: 18px;
+$icon-size-lg: 20px;
+$icon-size-xl: 24px;
+
+$border-radius: 8px;
