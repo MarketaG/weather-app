@@ -1,0 +1,135 @@
+@use "../styles/variables.scss" as *;
+
+.weather-main-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+
+  .weather-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-lg;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .weather-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .temperature-section {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-xl;
+
+    .temperature-left {
+      display: flex;
+      flex-direction: column;
+
+      .temperature-display {
+        display: flex;
+        align-items: flex-start;
+        line-height: 1;
+        margin-bottom: $spacing-md;
+
+        .temperature {
+          font-size: $text-8xl;
+          font-weight: $font-light;
+          color: var(--text-primary);
+          letter-spacing: -0.02em;
+        }
+
+        .degree-symbol {
+          font-size: $text-3xl;
+          font-weight: $font-medium;
+          color: var(--text-secondary);
+          margin-top: $spacing-xs;
+        }
+      }
+
+      .weather-description {
+        font-size: $text-2xl;
+        color: var(--text-tertiary);
+        font-weight: $font-light;
+        text-transform: capitalize;
+        margin-top: $spacing-xs;
+      }
+    }
+  }
+
+  .weather-stats {
+    display: flex;
+    gap: $spacing-lg;
+    align-items: flex-start;
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+      padding: $spacing-md;
+      background-color: var(--bg-secondary);
+      border-radius: $border-radius;
+
+      .stat-top {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xxs;
+      }
+
+      .stat-icon {
+        width: $icon-size-md;
+        height: $icon-size-md;
+        color: var(--text-tertiary);
+      }
+      .stat-label {
+        font-size: $text-sm;
+        color: var(--text-tertiary);
+      }
+
+      .stat-value {
+        font-size: $text-xl;
+        font-weight: $font-semibold;
+        color: var(--text-primary);
+      }
+
+      svg {
+        color: var(--accent-color);
+        flex-shrink: 0;
+      }
+
+      &:hover {
+        background-color: var(--border-color);
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .weather-main-card {
+    .weather-content {
+      flex-direction: column;
+    }
+
+    .weather-details {
+      width: 100%;
+    }
+
+    .temperature-section .temperature-display .temperature {
+      font-size: $text-7xl;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .weather-main-card {
+    padding: $spacing-lg;
+
+    .temperature-section .temperature-display .temperature {
+      font-size: $text-6xl;
+    }
+  }
+}

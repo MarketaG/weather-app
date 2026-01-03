@@ -38,6 +38,13 @@ body {
       margin-top: $spacing-lg;
     }
 
+    .content-container {
+      min-width: 1200px;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 $spacing-lg;
+    }
+
     .main-grid {
       display: grid;
       height: 100%;
@@ -51,9 +58,9 @@ body {
       .weather-main {
         grid-column: 1 / 2;
         grid-row: 1 / 2;
-        background-color: var(--bg-secondary);
-        padding: $spacing-lg;
         min-height: 0;
+        overflow: hidden;
+        display: flex;
       }
 
       .forecast-sidebar {

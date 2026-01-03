@@ -4,7 +4,7 @@
   --bg-tertiary: #eceef0;
 
   --text-primary: #303233;
-  --text-tertiary: #718096;
+  --text-tertiary: #5a667d;
   --text-subtitle: #6c7880;
 
   --border-color: #f6f7f8;
@@ -21,8 +21,16 @@
 $text-xs: 12px;
 $text-sm: 14px;
 $text-base: 16px;
+$text-lg: 18px;
+$text-xl: 20px;
+$text-2xl: 24px;
+$text-3xl: 32px;
+$text-6xl: 56px;
+$text-7xl: 72px;
+$text-8xl: 96px;
 
 $font-light: 300;
+$font-medium: 500;
 $font-semibold: 600;
 
 $transition-speed: 0.3s;

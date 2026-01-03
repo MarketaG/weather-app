@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Navigation } from "./components/Navigation";
 import { SectionHeader } from "./components/SectionHeader";
-import { DEFAULT_CITY } from "../src/data/mockData";
+import { WeatherMain } from "./components/WeatherMain";
+import { DEFAULT_CITY, mockWeather } from "../src/data/mockData";
 import type { City } from "./types/weather";
 
 /**
@@ -29,10 +30,14 @@ function App() {
             />
           </section>
 
-          <div className="main-grid">
-            <section className="weather-main">Weather Main</section>
-            <aside className="forecast-sidebar">Forecast Sidebar</aside>
-            <section className="hourly-chart">Hourly Chart</section>
+          <div className="content-container">
+            <div className="main-grid">
+              <section className="weather-main">
+                <WeatherMain weather={mockWeather()} />
+              </section>
+              <aside className="forecast-sidebar">Forecast Sidebar</aside>
+              <section className="hourly-chart">Hourly Chart</section>
+            </div>
           </div>
         </main>
 

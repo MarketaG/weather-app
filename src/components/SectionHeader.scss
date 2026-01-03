@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: $spacing-xl;
   flex-wrap: wrap;
 
   .icons-xl {
@@ -212,7 +211,7 @@
     align-items: center;
     gap: $spacing-xs;
     padding: $spacing-sm $spacing-md;
-    color: var(--text-primary);
+    color: var(--text-tertiary);
 
     .date-text {
       font-size: $text-sm;
