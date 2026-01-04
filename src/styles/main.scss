@@ -73,9 +73,13 @@ body {
       .hourly-chart {
         grid-column: 1 / -1;
         grid-row: 2 / 3;
-        background-color: var(--bg-secondary);
+
         padding: $spacing-lg;
-        min-height: 0;
+        min-height: 250px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }

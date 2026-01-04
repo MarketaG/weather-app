@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Navigation } from "./components/Navigation";
 import { SectionHeader } from "./components/SectionHeader";
-import { ForecastSidebar } from "./components/ForecastSidebar";
 import { WeatherMain } from "./components/WeatherMain";
-import { DEFAULT_CITY, mockWeather } from "../src/data/mockData";
+import { ForecastSidebar } from "./components/ForecastSidebar";
+import { HourlyChart } from "./components/HourlyChart";
+import { DEFAULT_CITY, mockWeather, hourlyByDay } from "../src/data/mockData";
 import type { City } from "./types/weather";
 
 /**
@@ -48,7 +49,9 @@ function App() {
                   onDaySelect={handleDaySelect}
                 />
               </aside>
-              <section className="hourly-chart">Hourly Chart</section>
+              <section className="hourly-chart">
+                <HourlyChart data={hourlyByDay} />
+              </section>
             </div>
           </div>
         </main>
