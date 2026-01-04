@@ -8,9 +8,10 @@ export function Navigation() {
           <img
             src="/logo_nav.svg"
             alt="Weatherflow"
-            width="144"
-            height="48"
+            width={144}
+            height={48}
             className="logo-image"
+            fetchPriority="high"
           />
 
           <div className="logo-rain">

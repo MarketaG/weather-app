@@ -19,6 +19,7 @@ export function WeatherIcon({
           alt={condition}
           width={width}
           height={height}
+          fetchPriority="high"
         />
       )}
     </span>
