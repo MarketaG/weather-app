@@ -43,3 +43,8 @@ export type WeatherCondition =
   | "Mist"
   | "Fog"
   | "Haze";
+
+export type HourlyTemperaturePoint = {
+  time: string;
+  temp: number;
+};

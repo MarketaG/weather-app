@@ -1,4 +1,4 @@
-import type { City, Weather } from "../types/weather";
+import type { City, Weather, HourlyTemperaturePoint } from "../types/weather";
 
 // I. mock data
 export const DEFAULT_CITY: City = {
@@ -112,3 +112,59 @@ export const mockWeather: Weather[] = [
     sys: { sunrise: 1714627440, sunset: 1714679100 },
   },
 ];
+
+// V. mock data
+export const hourlyByDay: {
+  [day: string]: HourlyTemperaturePoint[];
+} = {
+  Sunday: [
+    { time: "00:00", temp: 8 },
+    { time: "03:00", temp: 7 },
+    { time: "06:00", temp: 9 },
+    { time: "09:00", temp: 12 },
+    { time: "12:00", temp: 16 },
+    { time: "15:00", temp: 18 },
+    { time: "18:00", temp: 15 },
+    { time: "21:00", temp: 11 },
+  ],
+  Monday: [
+    { time: "00:00", temp: 10 },
+    { time: "03:00", temp: 9 },
+    { time: "06:00", temp: 11 },
+    { time: "09:00", temp: 14 },
+    { time: "12:00", temp: 17 },
+    { time: "15:00", temp: 19 },
+    { time: "18:00", temp: 16 },
+    { time: "21:00", temp: 12 },
+  ],
+  Tuesday: [
+    { time: "00:00", temp: 11 },
+    { time: "03:00", temp: 10 },
+    { time: "06:00", temp: 12 },
+    { time: "09:00", temp: 15 },
+    { time: "12:00", temp: 18 },
+    { time: "15:00", temp: 20 },
+    { time: "18:00", temp: 17 },
+    { time: "21:00", temp: 13 },
+  ],
+  Wednesday: [
+    { time: "00:00", temp: 9 },
+    { time: "03:00", temp: 8 },
+    { time: "06:00", temp: 10 },
+    { time: "09:00", temp: 13 },
+    { time: "12:00", temp: 16 },
+    { time: "15:00", temp: 18 },
+    { time: "18:00", temp: 14 },
+    { time: "21:00", temp: 11 },
+  ],
+  Thursday: [
+    { time: "00:00", temp: 10 },
+    { time: "03:00", temp: 9 },
+    { time: "06:00", temp: 11 },
+    { time: "09:00", temp: 14 },
+    { time: "12:00", temp: 17 },
+    { time: "15:00", temp: 19 },
+    { time: "18:00", temp: 16 },
+    { time: "21:00", temp: 12 },
+  ],
+};
