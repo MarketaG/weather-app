@@ -21,6 +21,8 @@
   --bg-primary: #242424;
 }
 
+$font-primary: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
 $text-xs: 12px;
 $text-sm: 14px;
 $text-base: 16px;
@@ -32,7 +34,7 @@ $text-6xl: 56px;
 $text-7xl: 72px;
 $text-8xl: 96px;
 
-$font-light: 300;
+$font-light: 400;
 $font-medium: 500;
 $font-semibold: 600;
 

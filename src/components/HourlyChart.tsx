@@ -11,6 +11,7 @@ import {
   type ChartOptions,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import "./HourlyChart.scss";
 import type { HourlyTemperaturePoint } from "../types/weather";
 
 ChartJS.register(
