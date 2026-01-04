@@ -1,18 +1,30 @@
+import { Line } from "react-chartjs-2";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
   Tooltip,
-  ResponsiveContainer,
-  LabelList,
-} from "recharts";
+  Filler,
+  type ChartData,
+  type ChartOptions,
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import type { HourlyTemperaturePoint } from "../types/weather";
 
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Tooltip,
+  Filler,
+  ChartDataLabels
+);
+
 type HourlyChartProps = {
-  data: {
-    [day: string]: HourlyTemperaturePoint[];
-  };
+  data: Record<string, HourlyTemperaturePoint[]>;
 };
 
 export function HourlyChart({ data }: HourlyChartProps) {
@@ -21,50 +33,57 @@ export function HourlyChart({ data }: HourlyChartProps) {
 
   const dayData = data[days[0]];
 
+  const chartData: ChartData<"line", number[], string> = {
+    labels: dayData.map((p) => p.time),
+    datasets: [
+      {
+        data: dayData.map((p) => p.temp),
+        borderColor: "#eb6e4b",
+        borderWidth: 1,
+        tension: 0.4,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: "#eb6e4b",
+        fill: false,
+      },
+    ],
+  };
+
+  const options: ChartOptions<"line"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        top: 50,
+      },
+    },
+    plugins: {
+      datalabels: {
+        align: "top" as const,
+        anchor: "end" as const,
+        offset: 6,
+        formatter: (value) => `${Math.round(value as number)}°`,
+      },
+      tooltip: {
+        enabled: true,
+      },
+    },
+    scales: {
+      x: {
+        border: { display: false },
+        grid: { display: false },
+      },
+      y: {
+        display: false,
+      },
+    },
+  };
+
   return (
-    <ResponsiveContainer width="100%" height={160}>
-      <LineChart
-        data={dayData}
-        margin={{ top: 10, right: 10, bottom: 5, left: 40 }}
-      >
-        <XAxis
-          dataKey="time"
-          tickLine={false}
-          axisLine={false}
-          style={{
-            fontSize: "12px",
-            fontWeight: 400,
-          }}
-        />
-        <YAxis hide />
-        <Tooltip
-          formatter={(value) =>
-            typeof value === "number" ? `${value}°C` : value
-          }
-        />
-        <Line
-          type="monotone"
-          dataKey="temp"
-          stroke="var(--orange-color)"
-          strokeWidth={1}
-          dot={{ r: 4 }}
-          activeDot={{ r: 6 }}
-        >
-          <LabelList
-            dataKey="temp"
-            position="top"
-            offset={10}
-            formatter={(value) =>
-              typeof value === "number" ? `${Math.round(value)}°` : value
-            }
-            style={{
-              fontSize: "var(--text-xs)",
-              fontWeight: "var(--font-light)",
-              fill: "var(--text-primary)",
-            }}
-          />
-        </Line>
-      </LineChart>
-    </ResponsiveContainer>
+    <div className="hourly-chart__inner">
+      <div style={{ width: "100%", height: "100%" }}>
+        <Line data={chartData} options={options} />
+      </div>
+    </div>
   );
 }
