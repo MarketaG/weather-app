@@ -1,0 +1,70 @@
+@use "../styles/variables.scss" as *;
+
+.footer-wrapper {
+  position: relative;
+  width: 100%;
+  background-color: var(--bg-secondary);
+  padding-top: $spacing-md;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background-color: var(--orange-color);
+    border-radius: $border-radius;
+    opacity: 1;
+    transition: background-color $transition-speed;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: $spacing-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+  }
+
+  .footer-item {
+    display: flex;
+    align-items: center;
+    transition: color $transition-speed;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .footer-link {
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color $transition-speed;
+    padding-left: 4px;
+
+    &:hover {
+      color: var(--orange-color);
+    }
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+}
+
+// mobile
+@media (max-width: 640px) {
+  .footer-wrapper {
+    .footer-content {
+      font-size: $text-xs;
+      gap: $spacing-xs;
+    }
+  }
+}

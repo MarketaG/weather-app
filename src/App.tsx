@@ -4,6 +4,7 @@ import { SectionHeader } from "./components/SectionHeader";
 import { WeatherMain } from "./components/WeatherMain";
 import { ForecastSidebar } from "./components/ForecastSidebar";
 import { HourlyChart } from "./components/HourlyChart";
+import { Footer } from "./components/Footer";
 import { DEFAULT_CITY, mockWeather, hourlyByDay } from "../src/data/mockData";
 import type { City } from "./types/weather";
 
@@ -12,7 +13,7 @@ import type { City } from "./types/weather";
  */
 function App() {
   const [currentCity, setCurrentCity] = useState<City>(DEFAULT_CITY);
-  const [selectedDay, setSelectedDay] = useState(1); // TODO
+  const [selectedDay, setSelectedDay] = useState(mockWeather[0].dt); // TODO
 
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
@@ -57,7 +58,9 @@ function App() {
         </main>
 
         <div className="footer-trigger"></div>
-        <footer className="footer">Footer content</footer>
+        <footer className="footer">
+          <Footer />
+        </footer>
       </div>
     </>
   );
