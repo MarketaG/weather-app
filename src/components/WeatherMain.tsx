@@ -32,14 +32,29 @@ export const WeatherMain = ({ city }: WeatherMainProps) => {
   useEffect(() => {
     if (!city) return;
 
-    setLoading(true);
+    let isMounted = true;
 
-    fetchWeather(city)
-      .then(setWeather)
-      .catch((err) => {
-        console.error("Failed to fetch weather", err);
-      })
-      .finally(() => setLoading(false));
+    const fetchData = async () => {
+      try {
+        if (isMounted) setLoading(true);
+        const data = await fetchWeather(city);
+        if (isMounted) setWeather(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error("Failed to fetch weather", err.message);
+        } else {
+          console.error("Failed to fetch weather", err);
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [city]);
 
   if (loading) {
