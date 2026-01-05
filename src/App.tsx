@@ -13,7 +13,7 @@ import type { City } from "./types/weather";
  */
 function App() {
   const [currentCity, setCurrentCity] = useState<City>(DEFAULT_CITY);
-  const [selectedDay, setSelectedDay] = useState(mockWeather[0].dt); // TODO
+  const [selectedDay, setSelectedDay] = useState(mockWeather[0].dt);
 
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
@@ -22,6 +22,19 @@ function App() {
   const handleDaySelect = (id: number) => {
     setSelectedDay(id);
   };
+
+  const selectedForecast =
+    mockWeather.find((day) => day.dt === selectedDay) ?? mockWeather[0];
+
+  // we take the date from the first hourly record of the selected day
+  const selectedDateStr = hourlyByDay
+    .find((h) => h.dt === selectedDay)
+    ?.dt_txt.slice(0, 10);
+
+  // filter hourly data by day using dt_txt
+  const dayData = hourlyByDay.filter((item) =>
+    selectedDateStr ? item.dt_txt.startsWith(selectedDateStr) : false
+  );
 
   return (
     <>
@@ -41,7 +54,7 @@ function App() {
           <div className="content-container">
             <div className="main-grid">
               <section className="weather-main">
-                <WeatherMain weather={mockWeather[0]} />
+                <WeatherMain weather={selectedForecast} />
               </section>
               <aside className="forecast-sidebar">
                 <ForecastSidebar
@@ -51,7 +64,7 @@ function App() {
                 />
               </aside>
               <section className="hourly-chart">
-                <HourlyChart data={hourlyByDay} />
+                <HourlyChart dayData={dayData} />
               </section>
             </div>
           </div>

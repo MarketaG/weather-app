@@ -25,20 +25,23 @@ ChartJS.register(
 );
 
 type HourlyChartProps = {
-  data: Record<string, HourlyTemperaturePoint[]>;
+  dayData: HourlyTemperaturePoint[];
 };
 
-export function HourlyChart({ data }: HourlyChartProps) {
-  const days = Object.keys(data);
-  if (days.length === 0) return null;
-
-  const dayData = data[days[0]];
-
+/**
+ * HOURLY CHART
+ * Displays 3-hour temperature forecast for a selected day
+ */
+export function HourlyChart({ dayData }: HourlyChartProps) {
   const chartData: ChartData<"line", number[], string> = {
-    labels: dayData.map((p) => p.time),
+    labels: dayData.map((p) => {
+      // "2026-01-06 09:00:00" → "09:00"
+      return p.dt_txt.slice(11, 16);
+    }),
+
     datasets: [
       {
-        data: dayData.map((p) => p.temp),
+        data: dayData.map((p) => p.main.temp),
         borderColor: "#eb6e4b",
         borderWidth: 1,
         tension: 0.4,

@@ -45,6 +45,9 @@ export type WeatherCondition =
   | "Haze";
 
 export type HourlyTemperaturePoint = {
-  time: string;
-  temp: number;
+  dt: number; // UNIX timestamp (UTC)
+  dt_txt: string; // "YYYY-MM-DD HH:MM:SS"
+  main: {
+    temp: number; // °C
+  };
 };
