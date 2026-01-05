@@ -1,0 +1,97 @@
+@use "../styles/variables.scss" as *;
+
+.forecast-sidebar-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.forecast-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: $spacing-xxs;
+}
+
+.forecast-list-item {
+  display: contents;
+}
+
+.forecast-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+
+  background-color: var(--bg-secondary);
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  text-align: left;
+
+  transition: background-color $transition-speed, transform $transition-speed,
+    $transition-speed;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+
+    width: 4px;
+    height: 0;
+
+    background-color: var(--orange-color);
+    border-radius: $border-radius;
+
+    transform: translateY(-50%);
+    opacity: 0;
+
+    transition: height 250ms ease, opacity 200ms ease;
+  }
+
+  &:hover {
+    background-color: var(--bg-tertiary);
+  }
+
+  &.active {
+    background-color: var(--bg-tertiary);
+  }
+
+  &.active::before {
+    height: 50%;
+    opacity: 1;
+  }
+}
+
+.forecast-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.forecast-day {
+  font-size: $text-sm;
+  font-weight: $font-semibold;
+  color: var(--text-primary);
+  text-transform: capitalize;
+}
+
+.forecast-description {
+  font-size: $text-xs;
+  color: var(--text-tertiary);
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.forecast-temp {
+  font-size: $text-sm;
+  font-weight: $font-light;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
