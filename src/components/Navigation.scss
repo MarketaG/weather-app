@@ -40,7 +40,7 @@
   .nav-github {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: $spacing-xs;
 
     padding: 6px 14px;
 
@@ -59,7 +59,7 @@
 
     &:hover {
       background-color: var(--orange-color);
-      color: #fff;
+      color: var(--bg-primary);
     }
   }
 
@@ -154,5 +154,32 @@
   100% {
     transform: translateY(40px);
     opacity: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .navigation {
+    min-height: 56px;
+
+    .nav-content {
+      padding: 0 $spacing-lg;
+    }
+
+    .logo-image {
+      height: 36px;
+    }
+
+    .version {
+      font-size: 10px;
+      padding: 3px 8px;
+    }
+
+    .nav-github {
+      padding: 6px;
+
+      .nav-github-text {
+        display: none;
+      }
+    }
   }
 }

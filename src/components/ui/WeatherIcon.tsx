@@ -1,3 +1,5 @@
+import "./WeatherIcon.scss";
+
 type WeatherIconProps = {
   condition: string;
   iconCode?: string;
@@ -5,23 +7,15 @@ type WeatherIconProps = {
   height?: number;
 };
 
-export function WeatherIcon({
-  condition,
-  iconCode,
-  width = 240,
-  height = 240,
-}: WeatherIconProps) {
+export function WeatherIcon({ condition, iconCode }: WeatherIconProps) {
   return (
-    <span role="img" aria-label={condition}>
+    <div className="weather-icon" role="img" aria-label={condition}>
       {iconCode && (
         <img
-          src={`https://openweathermap.org/img/wn/${iconCode}@4x.png`}
+          src={`https://openweathermap.org/img/wn/${iconCode}@2x.png`}
           alt={condition}
-          width={width}
-          height={height}
-          fetchPriority="high"
         />
       )}
-    </span>
+    </div>
   );
 }

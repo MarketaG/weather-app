@@ -1,4 +1,4 @@
-import { WeatherIcon } from "./ui/WeatherIcon";
+import { LargeWeatherIcon } from "./ui/LargeWeatherIcon";
 import {
   WindyIcon,
   HumidityIcon,
@@ -31,9 +31,9 @@ export const WeatherMain = ({ weather }: WeatherMainProps) => {
           <div className="temperature-section">
             <div className="temperature-left">
               <div className="temperature-display">
-                <span className="temperature">
+                <div className="temperature">
                   {Math.round(weather.main.temp - 273.15)}
-                </span>
+                </div>
                 <span className="degree-symbol">°C</span>
               </div>
 
@@ -43,7 +43,7 @@ export const WeatherMain = ({ weather }: WeatherMainProps) => {
             </div>
 
             <div>
-              <WeatherIcon
+              <LargeWeatherIcon
                 condition={weather.weather[0].main}
                 iconCode={weather.weather[0].icon}
               />

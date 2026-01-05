@@ -37,14 +37,10 @@ export const ForecastSidebar = ({
               onClick={() => onDaySelect(forecast.dt)}
               type="button"
             >
-              <span className="forecast-icon">
-                <WeatherIcon
-                  condition={forecast.weather[0].main}
-                  iconCode={forecast.weather[0].icon}
-                  width={60}
-                  height={60}
-                />
-              </span>
+              <WeatherIcon
+                condition={forecast.weather[0].main}
+                iconCode={forecast.weather[0].icon}
+              />
 
               <span className="forecast-info">
                 <span className="forecast-day capitalize">

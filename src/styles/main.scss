@@ -1,12 +1,14 @@
 @use "./variables" as *;
 @use "fonts";
 
+/* =========================
+   RESET
+   ========================= */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
-  font-family: inherit;
 }
 
 html,
@@ -16,21 +18,29 @@ body {
   font-feature-settings: "liga" 1, "calt" 1;
 }
 
+/* =========================
+     APP
+     ========================= */
+
 .app {
-  height: 100vh;
+  height: 100dvh;
   display: grid;
   grid-template-rows: 64px 1fr;
   overflow: hidden;
   position: relative;
 
   .header {
-    width: 100%;
     height: 64px;
   }
 
+  /* =========================
+       MAIN
+       ========================= */
+
   .main {
+    height: 100%;
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: min-content 1fr;
     min-height: 0;
     overflow: hidden;
 
@@ -40,49 +50,45 @@ body {
     }
 
     .content-container {
-      min-width: 1200px;
-      max-width: 1440px;
+      width: 100%;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 $spacing-lg;
+      padding-inline: clamp(16px, 4vw, 48px);
+      min-height: 0;
     }
+
+    /* =========================
+         MAIN GRID
+         ========================= */
 
     .main-grid {
       display: grid;
-      height: 100%;
       grid-template-columns: 3fr 1fr;
-      grid-template-rows: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-rows: 1fr auto;
       gap: $spacing-lg;
-      padding: $spacing-lg;
       min-height: 0;
-      overflow: hidden;
+      min-width: 0;
 
-      .weather-main {
-        grid-column: 1 / 2;
-        grid-row: 1 / 2;
-        min-height: 0;
-        overflow: hidden;
-        display: flex;
-      }
-
+      .weather-main,
       .forecast-sidebar {
-        grid-column: 2 / 3;
-        grid-row: 1 / 2;
-        overflow-y: auto;
         min-height: 0;
+        min-width: 0;
+        overflow: hidden;
       }
-
       .hourly-chart {
         grid-column: 1 / -1;
         grid-row: 2 / 3;
         padding: $spacing-lg;
         display: flex;
+        flex-shrink: 0;
+        min-width: 0;
       }
     }
   }
 
-  /*
-     FOOTER (OVERLAY)
-  */
+  /* =========================
+       FOOTER
+       ========================= */
 
   .footer {
     position: absolute;
@@ -90,22 +96,16 @@ body {
     left: 0;
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
     transform: translateY(calc(100% - 20px));
     transition: transform 0.25s ease;
     pointer-events: none;
   }
 
-  /*
-     FOOTER HOVER TRIGGER
-  */
-
   .footer-trigger {
     position: absolute;
     bottom: 0;
     left: 0;
-
     width: 100%;
     height: 10px;
     z-index: 10;
@@ -118,67 +118,119 @@ body {
   }
 }
 
-/*
-   TABLET
-*/
-@media (max-width: 1024px) {
+/* =========================
+     TABLET
+     ========================= */
+@media (max-height: 1200px) {
+  html,
+  body {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app {
+    height: 100dvh;
+    overflow: hidden;
+  }
+}
+
+/* =========================
+     MOBILE
+     ========================= */
+
+@media (max-width: 640px) {
+  html,
+  body {
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .app {
+    height: auto;
+    min-height: 100vh;
+
+    .main {
+      grid-template-rows: auto auto;
+      align-content: start;
+
+      .section-header {
+        padding: $spacing-sm $spacing-md;
+        margin: $spacing-sm $spacing-md 0;
+      }
+
+      .content-container {
+        padding: 0 $spacing-md;
+        height: auto;
+      }
+
+      .main-grid {
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: auto auto;
+        height: auto;
+        gap: $spacing-sm;
+        align-content: start;
+
+        .weather-main {
+          grid-column: 1 / 2;
+        }
+
+        .forecast-sidebar {
+          grid-column: 2 / 3;
+          overflow: visible;
+        }
+
+        .hourly-chart {
+          grid-column: 1 / -1;
+        }
+      }
+    }
+  }
+
+  .footer {
+    position: static;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .footer-trigger {
+    display: none;
+  }
+}
+
+/* =========================
+     SMALL MOBILE
+     ========================= */
+
+@media (max-width: 480px) {
+  html,
+  body {
+    height: auto;
+  }
+
   .app {
     .main {
+      .content-container {
+        max-width: 100%;
+        width: 100%;
+        min-width: 0;
+        padding-inline: $spacing-md;
+      }
+
       .main-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
+        grid-template-rows: auto;
         height: auto;
+        overflow: visible;
 
         .weather-main,
         .forecast-sidebar,
         .hourly-chart {
           grid-column: 1;
           grid-row: auto;
+          overflow: visible;
         }
       }
-    }
-
-    .footer {
-      transform: translateY(calc(100% - 14px));
-      transition: transform 0.3s ease;
-    }
-
-    .footer-trigger {
-      height: 14px;
-    }
-  }
-}
-
-/*
-   MOBILE
-*/
-@media (max-width: 640px) {
-  .app {
-    .navigation {
-      padding: 0 $spacing-md;
-    }
-
-    .main {
-      .section-header {
-        padding: $spacing-sm $spacing-md;
-        margin: $spacing-sm $spacing-md 0;
-      }
-
-      .main-grid {
-        padding: $spacing-md;
-        gap: $spacing-md;
-      }
-    }
-
-    /* footer always visible on mobile devices */
-    .footer {
-      transform: translateY(0);
-      pointer-events: auto;
-      position: static;
-    }
-
-    .footer-trigger {
-      display: none;
     }
   }
 }
