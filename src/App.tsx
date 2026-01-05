@@ -23,9 +23,6 @@ function App() {
     setSelectedDay(id);
   };
 
-  const selectedForecast =
-    mockWeather.find((day) => day.dt === selectedDay) ?? mockWeather[0];
-
   // we take the date from the first hourly record of the selected day
   const selectedDateStr = hourlyByDay
     .find((h) => h.dt === selectedDay)
@@ -54,7 +51,7 @@ function App() {
           <div className="content-container">
             <div className="main-grid">
               <section className="weather-main">
-                <WeatherMain weather={selectedForecast} />
+                <WeatherMain city={currentCity.name} />
               </section>
               <aside className="forecast-sidebar">
                 <ForecastSidebar

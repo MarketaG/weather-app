@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { LargeWeatherIcon } from "./ui/LargeWeatherIcon";
 import {
   WindyIcon,
@@ -6,22 +7,48 @@ import {
   SunriseIcon,
 } from "../assets/icons";
 import "./WeatherMain.scss";
+import { fetchWeather } from "../api/weather";
 import type { Weather } from "../types/weather";
 
 type WeatherMainProps = {
-  weather: Weather;
+  city: string;
 };
 
 /**
  * WEATHER MAIN
  * Main section displaying current weather information and related stats.
  */
-export const WeatherMain = ({ weather }: WeatherMainProps) => {
+export const WeatherMain = ({ city }: WeatherMainProps) => {
+  const [weather, setWeather] = useState<Weather | null>(null);
+  const [loading, setLoading] = useState(false);
+
   function formatTime(timestamp: number): string {
     return new Date(timestamp * 1000).toLocaleTimeString(navigator.language, {
       hour: "2-digit",
       minute: "2-digit",
     });
+  }
+
+  useEffect(() => {
+    if (!city) return;
+
+    setLoading(true);
+
+    fetchWeather(city)
+      .then(setWeather)
+      .catch((err) => {
+        console.error("Failed to fetch weather", err);
+      })
+      .finally(() => setLoading(false));
+  }, [city]);
+
+  if (loading) {
+    // TODO: replace with a more visually appealing loader or skeleton component
+    return <div className="weather-main-card">Loading...</div>;
+  }
+
+  if (!weather) {
+    return null;
   }
 
   return (
@@ -32,7 +59,7 @@ export const WeatherMain = ({ weather }: WeatherMainProps) => {
             <div className="temperature-left">
               <div className="temperature-display">
                 <div className="temperature">
-                  {Math.round(weather.main.temp - 273.15)}
+                  {Math.round(weather.main.temp)}
                 </div>
                 <span className="degree-symbol">°C</span>
               </div>
@@ -49,6 +76,7 @@ export const WeatherMain = ({ weather }: WeatherMainProps) => {
               />
             </div>
           </div>
+
           <div className="weather-stats">
             <div className="stat-item">
               <div className="stat-top">
