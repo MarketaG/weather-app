@@ -21,7 +21,10 @@ import type { City, DailyForecast } from "./types/weather";
  * APP
  */
 function App() {
-  const [currentCity, setCurrentCity] = useState<City>(DEFAULT_CITY);
+  const storedCity = localStorage.getItem("lastCity");
+  const [currentCity, setCurrentCity] = useState<City>(
+    storedCity ? JSON.parse(storedCity) : DEFAULT_CITY
+  );
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
   const { forecast, loading: isForecastLoading } = useForecast(
@@ -67,6 +70,7 @@ function App() {
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
     setSelectedDay(null);
+    localStorage.setItem("lastCity", JSON.stringify(city));
   };
 
   const handleDaySelect = (date: string) => {

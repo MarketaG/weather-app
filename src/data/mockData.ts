@@ -6,6 +6,7 @@ export const DEFAULT_CITY: City = {
   name: "New York City",
   state: "NY",
   country: "US",
+  coord: { lat: 40.7128, lon: -74.006 },
 };
 
 // II. mock data
@@ -15,30 +16,35 @@ export const mockCities: City[] = [
     name: "Praha",
     state: "",
     country: "CZ",
+    coord: { lat: 50.0755, lon: 14.4378 },
   },
   {
     id: 2,
     name: "Brno",
     state: "",
     country: "CZ",
+    coord: { lat: 49.1951, lon: 16.6068 },
   },
   {
     id: 3,
     name: "Ostrava",
     state: "",
     country: "CZ",
+    coord: { lat: 49.8209, lon: 18.2625 },
   },
   {
     id: 4,
     name: "Berlin",
     state: "",
     country: "DE",
+    coord: { lat: 52.52, lon: 13.405 },
   },
   {
     id: 5,
     name: "Munich",
     state: "",
     country: "DE",
+    coord: { lat: 48.1351, lon: 11.582 },
   },
 ];
 
@@ -49,12 +55,14 @@ export const mockRecentCities: City[] = [
     name: "Olomouc",
     state: "",
     country: "CZ",
+    coord: { lat: 49.5938, lon: 17.2509 },
   },
   {
     id: 2,
     name: "Zlín",
     state: "",
     country: "CZ",
+    coord: { lat: 49.2236, lon: 17.6667 },
   },
 ];
 

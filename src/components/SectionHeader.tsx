@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useCitySearch } from "../hooks/useCitySearch";
 import { formatDate } from "../utils/date";
+import { findNearestCity } from "../utils/location";
 
 import {
   MapPin,
@@ -65,8 +66,35 @@ export const SectionHeader = ({
   };
 
   const handleUseCurrentLocation = () => {
-    // TODO
-    console.log("Use current location clicked");
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        const nearestCity = await findNearestCity(latitude, longitude);
+
+        if (nearestCity) {
+          handleCitySelect(nearestCity);
+          localStorage.setItem("lastCity", JSON.stringify(nearestCity));
+        } else {
+          alert("Could not find a nearby city.");
+        }
+      },
+      (error) => {
+        console.error(error);
+        if (error.code === error.PERMISSION_DENIED) {
+          alert(
+            "Location access was denied. Please enable location permissions in your browser settings to use this feature."
+          );
+        } else {
+          alert("Unable to retrieve your location.");
+        }
+      }
+    );
   };
 
   return (
@@ -144,27 +172,29 @@ export const SectionHeader = ({
               )}
 
               {/* Search results */}
-              {isLoading ? (
-                <div className="dropdown-section-header">
-                  <div className="dropdown-loading">Loading</div>
-                </div>
-              ) : filteredCities.length > 0 ? (
-                filteredCities.map((city) => (
-                  <div key={city.id} className="dropdown-section-header">
-                    <button
-                      className="dropdown-item"
-                      onClick={() => handleCitySelect(city)}
-                    >
-                      <MapPin className="icons-sm" />
-                      <span>
-                        {city.name}, {city.country}
-                      </span>
-                    </button>
+              {isSearching ? (
+                isLoading ? (
+                  <div className="dropdown-section-header">
+                    <div className="dropdown-loading">Loading</div>
                   </div>
-                ))
-              ) : (
-                <div className="dropdown-empty">No results found</div>
-              )}
+                ) : filteredCities.length > 0 ? (
+                  filteredCities.map((city) => (
+                    <div key={city.id} className="dropdown-section-header">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => handleCitySelect(city)}
+                      >
+                        <MapPin className="icons-sm" />
+                        <span>
+                          {city.name}, {city.country}
+                        </span>
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <div className="dropdown-empty">No results found</div>
+                )
+              ) : null}
 
               {/* Default popular locations */}
               {!isSearching && (

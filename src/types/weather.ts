@@ -8,6 +8,7 @@ export type City = {
   name: string;
   state?: string;
   country: string;
+  coord: { lat: number; lon: number };
 };
 
 export type Weather = {
