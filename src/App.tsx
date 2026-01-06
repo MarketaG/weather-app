@@ -15,7 +15,7 @@ import { ForecastSidebar } from "./components/ForecastSidebar";
 import { HourlyChart } from "./components/HourlyChart";
 import { Footer } from "./components/Footer";
 
-import { DEFAULT_CITY } from "../src/data/mockData";
+import { DEFAULT_CITY } from "./data/defaultCity";
 import type { City, DailyForecast } from "./types/weather";
 
 /**

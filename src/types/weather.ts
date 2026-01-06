@@ -1,8 +1,3 @@
-export type CityCoord = {
-  lon: number;
-  lat: number;
-};
-
 export type City = {
   id: number;
   name: string;

@@ -14,7 +14,7 @@ import {
 } from "../assets/icons";
 
 import "./SectionHeader.scss";
-import { mockCities } from "../data/mockData";
+import { POPULAR_CITIES } from "../data/popularCities";
 import type { City } from "../types/weather";
 
 type SectionHeaderProps = {
@@ -204,7 +204,7 @@ export const SectionHeader = ({
                   <div className="dropdown-section-title">
                     Popular locations
                   </div>
-                  {mockCities.map((city) => (
+                  {POPULAR_CITIES.map((city) => (
                     <button
                       key={city.id}
                       className="dropdown-item"
