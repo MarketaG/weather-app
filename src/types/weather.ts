@@ -77,3 +77,11 @@ export type ForecastResponse = {
   city: ForecastCity;
   list: ForecastItem[];
 };
+
+export type DailyForecast = {
+  date: string; // YYYY-MM-DD
+  avgTemp: number;
+  humidity: number;
+  icon: string;
+  description: string;
+};

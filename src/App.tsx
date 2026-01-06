@@ -10,12 +10,11 @@ import {
 import { Navigation } from "./components/Navigation";
 import { SectionHeader } from "./components/SectionHeader";
 import { WeatherMain } from "./components/WeatherMain";
-// import { ForecastSidebar } from "./components/ForecastSidebar";
-// import { HourlyChart } from "./components/HourlyChart";
+import { ForecastSidebar } from "./components/ForecastSidebar";
 import { Footer } from "./components/Footer";
 
 import { DEFAULT_CITY } from "../src/data/mockData";
-import type { City } from "./types/weather";
+import type { City, DailyForecast } from "./types/weather";
 
 /**
  * APP
@@ -29,82 +28,90 @@ function App() {
   );
 
   const groupedByDay = forecast ? groupForecastByDay(forecast.list) : {};
-  const availableDays = Object.keys(groupedByDay);
+
+  const availableDays = Object.keys(groupedByDay).sort().slice(0, 5);
+
+  const forecastDays: DailyForecast[] = availableDays.map((date) => {
+    const items = groupedByDay[date];
+
+    return {
+      date,
+      avgTemp: getDailyAverageTemp(items),
+      humidity: getAverageHumidity(items),
+      ...getDominantWeather(items),
+    };
+  });
 
   const activeDay =
-    selectedDay && groupedByDay[selectedDay] ? selectedDay : availableDays[0];
+    selectedDay && availableDays.includes(selectedDay)
+      ? selectedDay
+      : availableDays[0];
 
-  const dayItems = activeDay ? groupedByDay[activeDay] : [];
+  const activeSidebarDay =
+    forecastDays.find((d) => d.date === activeDay) ?? null;
 
-  //
   const dailySummary =
-    dayItems.length && forecast?.city
+    activeSidebarDay && forecast?.city
       ? {
-          avgTemp: getDailyAverageTemp(dayItems),
-          ...getDominantWeather(dayItems),
-          humidity: getAverageHumidity(dayItems),
-
+          ...activeSidebarDay,
           sunrise: forecast.city.sunrise,
           sunset: forecast.city.sunset,
           timezone: forecast.city.timezone,
         }
       : null;
 
+  // HANDLERS
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
     setSelectedDay(null);
   };
 
-  // const handleDaySelect = (date: string) => {
-  //   setSelectedDay(date);
-  // };
-
-  console.log("forecast", forecast?.list);
+  const handleDaySelect = (date: string) => {
+    setSelectedDay(date);
+  };
 
   return (
-    <>
-      <div className="app">
-        <header className="header">
-          <Navigation />
-        </header>
+    <div className="app">
+      <header className="header">
+        <Navigation />
+      </header>
 
-        <main className="main">
-          <section className="section-header">
-            <SectionHeader
-              currentCity={currentCity}
-              onCityChange={handleCityChange}
-            />
-          </section>
+      <main className="main">
+        <section className="section-header">
+          <SectionHeader
+            currentCity={currentCity}
+            onCityChange={handleCityChange}
+          />
+        </section>
 
-          <div className="content-container">
-            <div className="main-grid">
-              <section className="weather-main">
-                <WeatherMain
-                  day={dailySummary}
-                  city={forecast?.city}
-                  loading={isForecastLoading}
-                />
-              </section>
-              <aside className="forecast-sidebar">
-                {/* <ForecastSidebar
-                  forecasts={mockWeather}
-                  selectedDay={selectedDay}
-                  onDaySelect={handleDaySelect}
-                /> */}
-              </aside>
-              <section className="hourly-chart">
-                {/* <HourlyChart dayData={dayData} /> */}
-              </section>
-            </div>
+        <div className="content-container">
+          <div className="main-grid">
+            <section className="weather-main">
+              <WeatherMain
+                day={dailySummary}
+                city={forecast?.city}
+                loading={isForecastLoading}
+              />
+            </section>
+
+            <aside className="forecast-sidebar">
+              <ForecastSidebar
+                days={forecastDays}
+                selectedDay={activeDay ?? null}
+                onDaySelect={handleDaySelect}
+              />
+            </aside>
+
+            <section className="hourly-chart">{/* <HourlyChart /> */}</section>
           </div>
-        </main>
+        </div>
+      </main>
 
-        <div className="footer-trigger"></div>
-        <footer className="footer">
-          <Footer />
-        </footer>
-      </div>
-    </>
+      <div className="footer-trigger" />
+      <footer className="footer">
+        <Footer />
+      </footer>
+    </div>
   );
 }
 
