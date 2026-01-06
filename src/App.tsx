@@ -63,7 +63,7 @@ function App() {
 
   const hourlyDayData = activeDay ? groupedByDay[activeDay] ?? [] : [];
 
-  // HANDLERS
+  // handlers
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
     setSelectedDay(null);
@@ -83,6 +83,7 @@ function App() {
         <section className="section-header">
           <SectionHeader
             currentCity={currentCity}
+            selectedDay={activeDay ?? null}
             onCityChange={handleCityChange}
           />
         </section>

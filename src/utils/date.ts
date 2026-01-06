@@ -7,3 +7,11 @@ export function formatTime(timestamp: number, timezoneOffsetSeconds: number) {
     timeZone: "UTC",
   });
 }
+
+export const formatDate = (
+  date: string | Date,
+  options?: Intl.DateTimeFormatOptions
+) => {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat(navigator.language, options).format(d);
+};

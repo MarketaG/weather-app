@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/date";
+
 import { WeatherIcon } from "./ui/WeatherIcon";
 import "./ForecastSidebar.scss";
 
@@ -23,11 +25,6 @@ export const ForecastSidebar = ({
   selectedDay,
   onDaySelect,
 }: ForecastSidebarProps) => {
-  const formatDate = (date: string) =>
-    new Intl.DateTimeFormat(navigator.language, {
-      weekday: "long",
-    }).format(new Date(date));
-
   return (
     <section className="forecast-sidebar-card">
       <ul className="forecast-list">
@@ -44,7 +41,7 @@ export const ForecastSidebar = ({
 
               <span className="forecast-info">
                 <span className="forecast-day capitalize">
-                  {formatDate(day.date)}
+                  {formatDate(day.date, { weekday: "long" })}
                 </span>
                 <span className="forecast-description">{day.description}</span>
               </span>

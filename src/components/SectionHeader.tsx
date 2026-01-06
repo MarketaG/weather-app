@@ -1,4 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import { useDebounce } from "../hooks/useDebounce";
+import { useCitySearch } from "../hooks/useCitySearch";
+import { formatDate } from "../utils/date";
+
 import {
   MapPin,
   CalendarDays,
@@ -7,12 +11,14 @@ import {
   Home,
   ArrowPath,
 } from "../assets/icons";
+
 import "./SectionHeader.scss";
 import { mockCities, mockRecentCities } from "../data/mockData";
 import type { City } from "../types/weather";
 
 type SectionHeaderProps = {
   currentCity: City;
+  selectedDay: string;
   onCityChange: (city: City) => void;
 };
 
@@ -22,20 +28,21 @@ type SectionHeaderProps = {
  */
 export const SectionHeader = ({
   currentCity,
+  selectedDay,
   onCityChange,
 }: SectionHeaderProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isSearching = searchQuery.trim().length > 0;
 
-  const filteredCities = mockCities.filter(
-    (city) =>
-      city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      city.country.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const debouncedQuery = useDebounce(searchQuery, 300);
+  const { results: filteredCities, loading: isSearchLoading } =
+    useCitySearch(debouncedQuery);
+
+  const isLoading = isSearching && isSearchLoading;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,31 +57,6 @@ export const SectionHeader = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  useEffect(() => {
-    if (!isSearching) return;
-
-    // TODO: Replace mock loading with debounced API search
-
-    setIsLoading(true);
-
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [searchQuery, isSearching]);
-
-  const formatDate = (
-    date: Date = new Date(),
-    locale: string | undefined = undefined
-  ) => {
-    return new Intl.DateTimeFormat(locale, {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-    }).format(date);
-  };
 
   const handleCitySelect = (city: City) => {
     onCityChange(city);
@@ -162,31 +144,26 @@ export const SectionHeader = ({
               )}
 
               {/* Search results */}
-              {isSearching && (
-                <>
-                  {isLoading ? (
-                    <div className="dropdown-section-header">
-                      <div className="dropdown-loading">Loading</div>
-                    </div>
-                  ) : filteredCities.length > 0 ? (
-                    filteredCities.map((city) => (
-                      <div className="dropdown-section-header">
-                        <button
-                          key={city.id}
-                          className="dropdown-item"
-                          onClick={() => handleCitySelect(city)}
-                        >
-                          <MapPin className="icons-sm" />
-                          <span>
-                            {city.name}, {city.country}
-                          </span>
-                        </button>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="dropdown-empty">No results found</div>
-                  )}
-                </>
+              {isLoading ? (
+                <div className="dropdown-section-header">
+                  <div className="dropdown-loading">Loading</div>
+                </div>
+              ) : filteredCities.length > 0 ? (
+                filteredCities.map((city) => (
+                  <div key={city.id} className="dropdown-section-header">
+                    <button
+                      className="dropdown-item"
+                      onClick={() => handleCitySelect(city)}
+                    >
+                      <MapPin className="icons-sm" />
+                      <span>
+                        {city.name}, {city.country}
+                      </span>
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div className="dropdown-empty">No results found</div>
               )}
 
               {/* Default popular locations */}
@@ -216,7 +193,17 @@ export const SectionHeader = ({
 
       <div className="date-info">
         <CalendarDays className="icons-xl" />
-        <span className="date-text">{formatDate()}</span>
+        <span className="date-text">
+          <span className="date-text">
+            {selectedDay
+              ? formatDate(selectedDay, {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                })
+              : ""}
+          </span>
+        </span>
       </div>
     </div>
   );

@@ -6,9 +6,8 @@ export type CityCoord = {
 export type City = {
   id: number;
   name: string;
-  state: string;
+  state?: string;
   country: string;
-  coord: CityCoord;
 };
 
 export type Weather = {
