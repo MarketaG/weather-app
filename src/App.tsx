@@ -1,13 +1,20 @@
 import { useState } from "react";
-import { useCurrentWeather } from "../src/hooks/useWeather";
+import { useForecast } from "./hooks/useForecast";
+import { groupForecastByDay } from "./utils/forecast";
+import {
+  getDominantWeather,
+  getDailyAverageTemp,
+  getAverageHumidity,
+} from "./utils/weather";
 
 import { Navigation } from "./components/Navigation";
 import { SectionHeader } from "./components/SectionHeader";
 import { WeatherMain } from "./components/WeatherMain";
-import { ForecastSidebar } from "./components/ForecastSidebar";
-import { HourlyChart } from "./components/HourlyChart";
+// import { ForecastSidebar } from "./components/ForecastSidebar";
+// import { HourlyChart } from "./components/HourlyChart";
 import { Footer } from "./components/Footer";
-import { DEFAULT_CITY, mockWeather, hourlyByDay } from "../src/data/mockData";
+
+import { DEFAULT_CITY } from "../src/data/mockData";
 import type { City } from "./types/weather";
 
 /**
@@ -15,26 +22,44 @@ import type { City } from "./types/weather";
  */
 function App() {
   const [currentCity, setCurrentCity] = useState<City>(DEFAULT_CITY);
-  const [selectedDay, setSelectedDay] = useState(mockWeather[0].dt);
-  const { weather, loading } = useCurrentWeather(currentCity.name);
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+
+  const { forecast, loading: isForecastLoading } = useForecast(
+    currentCity.name
+  );
+
+  const groupedByDay = forecast ? groupForecastByDay(forecast.list) : {};
+  const availableDays = Object.keys(groupedByDay);
+
+  const activeDay =
+    selectedDay && groupedByDay[selectedDay] ? selectedDay : availableDays[0];
+
+  const dayItems = activeDay ? groupedByDay[activeDay] : [];
+
+  //
+  const dailySummary =
+    dayItems.length && forecast?.city
+      ? {
+          avgTemp: getDailyAverageTemp(dayItems),
+          ...getDominantWeather(dayItems),
+          humidity: getAverageHumidity(dayItems),
+
+          sunrise: forecast.city.sunrise,
+          sunset: forecast.city.sunset,
+          timezone: forecast.city.timezone,
+        }
+      : null;
 
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
+    setSelectedDay(null);
   };
 
-  const handleDaySelect = (id: number) => {
-    setSelectedDay(id);
-  };
+  // const handleDaySelect = (date: string) => {
+  //   setSelectedDay(date);
+  // };
 
-  // we take the date from the first hourly record of the selected day
-  const selectedDateStr = hourlyByDay
-    .find((h) => h.dt === selectedDay)
-    ?.dt_txt.slice(0, 10);
-
-  // filter hourly data by day using dt_txt
-  const dayData = hourlyByDay.filter((item) =>
-    selectedDateStr ? item.dt_txt.startsWith(selectedDateStr) : false
-  );
+  console.log("forecast", forecast?.list);
 
   return (
     <>
@@ -54,17 +79,21 @@ function App() {
           <div className="content-container">
             <div className="main-grid">
               <section className="weather-main">
-                <WeatherMain weather={weather} loading={loading} />
+                <WeatherMain
+                  day={dailySummary}
+                  city={forecast?.city}
+                  loading={isForecastLoading}
+                />
               </section>
               <aside className="forecast-sidebar">
-                <ForecastSidebar
+                {/* <ForecastSidebar
                   forecasts={mockWeather}
                   selectedDay={selectedDay}
                   onDaySelect={handleDaySelect}
-                />
+                /> */}
               </aside>
               <section className="hourly-chart">
-                <HourlyChart dayData={dayData} />
+                {/* <HourlyChart dayData={dayData} /> */}
               </section>
             </div>
           </div>

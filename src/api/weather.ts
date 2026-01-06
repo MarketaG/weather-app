@@ -1,12 +1,12 @@
-export async function fetchCurrentWeather(city: string) {
-  const baseUrl = import.meta.env.VITE_OPENWEATHER_BASE_URL;
+export async function fetchForecast(city: string) {
+  const forecastUrl = import.meta.env.VITE_OPENWEATHER_FORECAST_URL;
   const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
-  if (!baseUrl || !apiKey) {
+  if (!forecastUrl || !apiKey) {
     throw new Error("OpenWeather API is not configured. See .env.example.");
   }
 
-  const url = `${baseUrl}?q=${encodeURIComponent(
+  const url = `${forecastUrl}?q=${encodeURIComponent(
     city
   )}&appid=${apiKey}&units=metric`;
 
@@ -14,7 +14,7 @@ export async function fetchCurrentWeather(city: string) {
 
   if (!res.ok) {
     const text = await res.text();
-    console.error("[fetchCurrentWeather] API response error:", text);
+    console.error("[fetchForecast] API response error:", text);
     throw new Error(`Failed to fetch weather for "${city}"`);
   }
 

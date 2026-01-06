@@ -33,21 +33,47 @@ export type Weather = {
   };
 };
 
-export type WeatherCondition =
-  | "Clear"
-  | "Clouds"
-  | "Rain"
-  | "Drizzle"
-  | "Thunderstorm"
-  | "Snow"
-  | "Mist"
-  | "Fog"
-  | "Haze";
-
 export type HourlyTemperaturePoint = {
   dt: number; // UNIX timestamp (UTC)
   dt_txt: string; // "YYYY-MM-DD HH:MM:SS"
   main: {
     temp: number; // °C
   };
+};
+
+export type ForecastItem = {
+  dt: number;
+  dt_txt: string;
+
+  main: {
+    temp: number;
+    humidity: number;
+  };
+
+  weather: Array<{
+    main: string;
+    description: string;
+    icon: string;
+  }>;
+
+  wind: {
+    speed: number;
+  };
+};
+
+export type ForecastCity = {
+  name: string;
+  sunrise: number;
+  sunset: number;
+
+  coord: {
+    lat: number;
+    lon: number;
+  };
+  timezone: number;
+};
+
+export type ForecastResponse = {
+  city: ForecastCity;
+  list: ForecastItem[];
 };
