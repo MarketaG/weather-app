@@ -4,6 +4,21 @@
   width: 100%;
   height: 180px;
 
+  .hourly-chart {
+    &__inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    &__notice {
+      font-size: $text-xs;
+      color: var(--text-subtitle);
+      margin-bottom: $spacing-xs;
+      text-align: center;
+    }
+  }
+
   @media (max-width: 1024px) {
     height: 160px;
   }

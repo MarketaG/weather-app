@@ -11,6 +11,7 @@ import { Navigation } from "./components/Navigation";
 import { SectionHeader } from "./components/SectionHeader";
 import { WeatherMain } from "./components/WeatherMain";
 import { ForecastSidebar } from "./components/ForecastSidebar";
+import { HourlyChart } from "./components/HourlyChart";
 import { Footer } from "./components/Footer";
 
 import { DEFAULT_CITY } from "../src/data/mockData";
@@ -60,6 +61,8 @@ function App() {
         }
       : null;
 
+  const hourlyDayData = activeDay ? groupedByDay[activeDay] ?? [] : [];
+
   // HANDLERS
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
@@ -102,7 +105,11 @@ function App() {
               />
             </aside>
 
-            <section className="hourly-chart">{/* <HourlyChart /> */}</section>
+            <section className="hourly-chart">
+              {hourlyDayData.length > 0 && (
+                <HourlyChart dayData={hourlyDayData} />
+              )}
+            </section>
           </div>
         </div>
       </main>
