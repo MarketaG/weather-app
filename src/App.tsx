@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useCurrentWeather } from "../src/hooks/useWeather";
+
 import { Navigation } from "./components/Navigation";
 import { SectionHeader } from "./components/SectionHeader";
 import { WeatherMain } from "./components/WeatherMain";
@@ -14,6 +16,7 @@ import type { City } from "./types/weather";
 function App() {
   const [currentCity, setCurrentCity] = useState<City>(DEFAULT_CITY);
   const [selectedDay, setSelectedDay] = useState(mockWeather[0].dt);
+  const { weather, loading } = useCurrentWeather(currentCity.name);
 
   const handleCityChange = (city: City) => {
     setCurrentCity(city);
@@ -51,7 +54,7 @@ function App() {
           <div className="content-container">
             <div className="main-grid">
               <section className="weather-main">
-                <WeatherMain city={currentCity.name} />
+                <WeatherMain weather={weather} loading={loading} />
               </section>
               <aside className="forecast-sidebar">
                 <ForecastSidebar

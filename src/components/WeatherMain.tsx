@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { LargeWeatherIcon } from "./ui/LargeWeatherIcon";
 import {
   WindyIcon,
@@ -7,21 +6,18 @@ import {
   SunriseIcon,
 } from "../assets/icons";
 import "./WeatherMain.scss";
-import { fetchWeather } from "../api/weather";
 import type { Weather } from "../types/weather";
 
 type WeatherMainProps = {
-  city: string;
+  weather: Weather | null;
+  loading: boolean;
 };
 
 /**
  * WEATHER MAIN
  * Main section displaying current weather information and related stats.
  */
-export const WeatherMain = ({ city }: WeatherMainProps) => {
-  const [weather, setWeather] = useState<Weather | null>(null);
-  const [loading, setLoading] = useState(false);
-
+export const WeatherMain = ({ weather, loading }: WeatherMainProps) => {
   function formatTime(timestamp: number): string {
     return new Date(timestamp * 1000).toLocaleTimeString(navigator.language, {
       hour: "2-digit",
@@ -29,36 +25,7 @@ export const WeatherMain = ({ city }: WeatherMainProps) => {
     });
   }
 
-  useEffect(() => {
-    if (!city) return;
-
-    let isMounted = true;
-
-    const fetchData = async () => {
-      try {
-        if (isMounted) setLoading(true);
-        const data = await fetchWeather(city);
-        if (isMounted) setWeather(data);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error("Failed to fetch weather", err.message);
-        } else {
-          console.error("Failed to fetch weather", err);
-        }
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [city]);
-
   if (loading) {
-    // TODO: replace with a more visually appealing loader or skeleton component
     return <div className="weather-main-card">Loading...</div>;
   }
 
@@ -84,46 +51,36 @@ export const WeatherMain = ({ city }: WeatherMainProps) => {
               </p>
             </div>
 
-            <div>
-              <LargeWeatherIcon
-                condition={weather.weather[0].main}
-                iconCode={weather.weather[0].icon}
-              />
-            </div>
+            <LargeWeatherIcon
+              condition={weather.weather[0].main}
+              iconCode={weather.weather[0].icon}
+            />
           </div>
 
           <div className="weather-stats">
             <div className="stat-item">
-              <div className="stat-top">
-                <WindyIcon className="stat-icon" />
-                <span className="stat-label">Wind</span>
-              </div>
+              <WindyIcon className="stat-icon" />
+              <span className="stat-label">Wind</span>
               <span className="stat-value">{weather.wind.speed} m/s</span>
             </div>
 
             <div className="stat-item">
-              <div className="stat-top">
-                <HumidityIcon className="stat-icon" />
-                <span className="stat-label">Humidity</span>
-              </div>
+              <HumidityIcon className="stat-icon" />
+              <span className="stat-label">Humidity</span>
               <span className="stat-value">{weather.main.humidity}%</span>
             </div>
 
             <div className="stat-item">
-              <div className="stat-top">
-                <SunriseIcon className="stat-icon" />
-                <span className="stat-label">Sunrise</span>
-              </div>
+              <SunriseIcon className="stat-icon" />
+              <span className="stat-label">Sunrise</span>
               <span className="stat-value">
                 {formatTime(weather.sys.sunrise)}
               </span>
             </div>
 
             <div className="stat-item">
-              <div className="stat-top">
-                <SunsetIcon className="stat-icon" />
-                <span className="stat-label">Sunset</span>
-              </div>
+              <SunsetIcon className="stat-icon" />
+              <span className="stat-label">Sunset</span>
               <span className="stat-value">
                 {formatTime(weather.sys.sunset)}
               </span>
