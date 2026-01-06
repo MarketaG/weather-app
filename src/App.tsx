@@ -5,6 +5,7 @@ import {
   getDominantWeather,
   getDailyAverageTemp,
   getAverageHumidity,
+  getAverageWind,
 } from "./utils/weather";
 
 import { Navigation } from "./components/Navigation";
@@ -22,8 +23,13 @@ import type { City, DailyForecast } from "./types/weather";
  */
 function App() {
   const storedCity = localStorage.getItem("lastCity");
+  const storedRecent = localStorage.getItem("recentCities");
+
   const [currentCity, setCurrentCity] = useState<City>(
     storedCity ? JSON.parse(storedCity) : DEFAULT_CITY
+  );
+  const [recentCities, setRecentCities] = useState<City[]>(
+    storedRecent ? JSON.parse(storedRecent) : []
   );
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
@@ -42,6 +48,7 @@ function App() {
       date,
       avgTemp: getDailyAverageTemp(items),
       humidity: getAverageHumidity(items),
+      wind: getAverageWind(items),
       ...getDominantWeather(items),
     };
   });
@@ -71,6 +78,16 @@ function App() {
     setCurrentCity(city);
     setSelectedDay(null);
     localStorage.setItem("lastCity", JSON.stringify(city));
+
+    // Update of the last two selected cities
+    setRecentCities((prev) => {
+      const newList = [city, ...prev.filter((c) => c.id !== city.id)].slice(
+        0,
+        2
+      );
+      localStorage.setItem("recentCities", JSON.stringify(newList));
+      return newList;
+    });
   };
 
   const handleDaySelect = (date: string) => {
@@ -89,6 +106,7 @@ function App() {
             currentCity={currentCity}
             selectedDay={activeDay ?? null}
             onCityChange={handleCityChange}
+            recentCities={recentCities}
           />
         </section>
 

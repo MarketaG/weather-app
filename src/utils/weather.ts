@@ -63,3 +63,8 @@ export function getAverageHumidity(items: ForecastItem[]) {
   const sum = items.reduce((acc, i) => acc + i.main.humidity, 0);
   return Math.round(sum / items.length);
 }
+
+export function getAverageWind(items: ForecastItem[]) {
+  const sum = items.reduce((acc, i) => acc + i.wind.speed, 0);
+  return Math.round(sum / items.length);
+}

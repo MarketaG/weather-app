@@ -14,13 +14,14 @@ import {
 } from "../assets/icons";
 
 import "./SectionHeader.scss";
-import { mockCities, mockRecentCities } from "../data/mockData";
+import { mockCities } from "../data/mockData";
 import type { City } from "../types/weather";
 
 type SectionHeaderProps = {
   currentCity: City;
   selectedDay: string;
   onCityChange: (city: City) => void;
+  recentCities: City[];
 };
 
 /**
@@ -31,6 +32,7 @@ export const SectionHeader = ({
   currentCity,
   selectedDay,
   onCityChange,
+  recentCities,
 }: SectionHeaderProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -149,12 +151,12 @@ export const SectionHeader = ({
                   </div>
 
                   {/* Last searched */}
-                  {mockRecentCities.length > 0 && (
+                  {recentCities.length > 0 && (
                     <div className="dropdown-section-header">
                       <div className="dropdown-section-title">
                         Last searched
                       </div>
-                      {mockRecentCities.map((city) => (
+                      {recentCities.map((city) => (
                         <button
                           key={city.id}
                           className="dropdown-item"

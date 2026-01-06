@@ -17,6 +17,7 @@ export function LargeWeatherIcon({
         <img
           src={`https://openweathermap.org/img/wn/${safeIcon}@4x.png`}
           alt={condition}
+          fetchPriority="high"
         />
       )}
     </div>

@@ -82,6 +82,7 @@ export type DailyForecast = {
   date: string; // YYYY-MM-DD
   avgTemp: number;
   humidity: number;
+  wind: number;
   icon: string;
   description: string;
 };

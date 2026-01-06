@@ -1,5 +1,10 @@
 import { LargeWeatherIcon } from "./ui/LargeWeatherIcon";
-import { HumidityIcon, SunriseIcon, SunsetIcon } from "../assets/icons";
+import {
+  WindyIcon,
+  HumidityIcon,
+  SunriseIcon,
+  SunsetIcon,
+} from "../assets/icons";
 import { formatTime } from "../utils/date";
 import "./WeatherMain.scss";
 
@@ -8,6 +13,7 @@ type DailySummary = {
   icon: string;
   description: string;
   humidity: number;
+  wind: number;
   sunrise?: number;
   sunset?: number;
   timezone?: number;
@@ -50,6 +56,12 @@ export const WeatherMain = ({ day, loading }: WeatherMainProps) => {
           </div>
 
           <div className="weather-stats">
+            <div className="stat-item">
+              <WindyIcon className="stat-icon" />
+              <span className="stat-label">Wind</span>
+              <span className="stat-value">{day.wind} km/h</span>
+            </div>
+
             <div className="stat-item">
               <HumidityIcon className="stat-icon" />
               <span className="stat-label">Humidity</span>
