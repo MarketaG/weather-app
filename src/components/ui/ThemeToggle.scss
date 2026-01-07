@@ -1,0 +1,30 @@
+@use "../../styles/variables.scss" as *;
+
+/* default (dark) */
+.nav-theme {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  cursor: pointer;
+  padding: 6px 14px;
+  color: var(--text-subtitle);
+  text-decoration: none;
+  background: linear-gradient(to bottom, var(--bg-primary), var(--bg-tertiary));
+  border-radius: 9999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  outline: 2px solid var(--bg-primary);
+  border: 1px solid var(--border-accent);
+}
+
+.icons-sm {
+  width: $icon-size-sm;
+  height: $icon-size-sm;
+}
+
+@media (max-width: 480px) {
+  .nav-theme {
+    min-height: 28px;
+    padding: 6px;
+  }
+}

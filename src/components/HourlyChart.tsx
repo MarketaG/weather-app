@@ -33,6 +33,8 @@ type HourlyChartProps = {
  * Displays 3-hour temperature forecast for a selected day
  */
 export function HourlyChart({ dayData }: HourlyChartProps) {
+  const firstHour = dayData[0]?.dt_txt.slice(11, 16); // "18:00"
+
   const chartData: ChartData<"line", number[], string> = {
     labels: dayData.map((p) => {
       // "2026-01-06 09:00:00" → "09:00"
@@ -85,6 +87,12 @@ export function HourlyChart({ dayData }: HourlyChartProps) {
 
   return (
     <div className="hourly-chart__inner">
+      {firstHour && firstHour !== "00:00" && (
+        <div className="hourly-chart__notice">
+          Forecast available from {firstHour}
+        </div>
+      )}
+
       <div style={{ width: "100%", height: "100%" }}>
         <Line data={chartData} options={options} />
       </div>

@@ -1,4 +1,5 @@
 import { GitHubIcon } from "../assets/icons/GitHubIcon";
+import { ThemeToggle } from "./ui/ThemeToggle";
 import "./Navigation.scss";
 
 export function Navigation() {
@@ -39,6 +40,7 @@ export function Navigation() {
             <GitHubIcon className="icons-sm" />
             <span className="nav-github-text">Documentation</span>
           </a>
+          <ThemeToggle />
         </div>
       </div>
     </nav>

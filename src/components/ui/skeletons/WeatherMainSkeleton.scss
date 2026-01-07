@@ -1,0 +1,192 @@
+@use "../../../styles/variables.scss" as *;
+
+.skeleton {
+  pointer-events: none;
+  animation: skeleton-fade-in 0.3s ease-out;
+}
+
+.weather-main-skeleton {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.weather-skeleton-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-lg;
+  flex: 1;
+}
+
+.weather-skeleton-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-temperature-section {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-xl;
+}
+
+.skeleton-temp-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-temp-display {
+  display: flex;
+  align-items: flex-start;
+  line-height: 0.9;
+  margin-bottom: $spacing-md;
+}
+
+.skeleton-temp {
+  width: clamp(3.5rem, 10vw, 6.5rem);
+  height: clamp(3.5rem, 10vw, 6.5rem);
+  border-radius: $border-radius;
+}
+
+.skeleton-degree {
+  width: clamp(1.25rem, 3vw, 2rem);
+  height: clamp(1.25rem, 3vw, 2rem);
+  margin-left: 6px;
+  border-radius: 50%;
+}
+
+.skeleton-text {
+  width: 160px;
+  height: clamp(1rem, 3.5vw, 1.5rem);
+  margin-top: $spacing-xs;
+}
+
+.skeleton-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+}
+
+.weather-skeleton-stats {
+  display: flex;
+  gap: $spacing-lg;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.skeleton-stat {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  padding: $spacing-md;
+  background-color: var(--bg-secondary);
+  border-radius: $border-radius;
+  min-width: 120px;
+}
+
+.skeleton-stat-top {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xxxs;
+}
+
+.skeleton-icon-sm {
+  width: $icon-size-md;
+  height: $icon-size-md;
+  border-radius: 50%;
+}
+
+.skeleton-label {
+  width: 56px;
+  height: 10px;
+}
+
+.skeleton-value {
+  width: 38px;
+  height: 12px;
+}
+
+.skeleton-box,
+.skeleton-icon,
+.skeleton-icon-sm,
+.skeleton-temp,
+.skeleton-degree,
+.skeleton-text,
+.skeleton-label,
+.skeleton-value {
+  background: linear-gradient(
+    110deg,
+    var(--bg-secondary) 35%,
+    var(--bg-tertiary) 45%,
+    var(--bg-secondary) 55%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  opacity: 0.85;
+}
+
+@media (max-width: 1024px) {
+  .weather-skeleton-content {
+    flex-direction: column;
+  }
+
+  .weather-skeleton-details {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .weather-skeleton-stats {
+    gap: $spacing-sm;
+  }
+
+  .skeleton-stat {
+    align-items: center;
+    text-align: center;
+    padding: $spacing-sm;
+    gap: $spacing-xs;
+  }
+
+  .skeleton-stat-top {
+    flex-direction: column;
+  }
+
+  .skeleton-icon-sm {
+    width: 20px;
+    height: 20px;
+  }
+
+  .skeleton-label {
+    height: 8px;
+  }
+
+  .skeleton-value {
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skeleton-stat {
+    min-width: unset;
+    flex: 0 1 45%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes skeleton-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

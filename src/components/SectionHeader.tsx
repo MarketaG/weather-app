@@ -1,4 +1,9 @@
 import { useState, useEffect, useRef } from "react";
+import { useDebounce } from "../hooks/useDebounce";
+import { useCitySearch } from "../hooks/useCitySearch";
+import { formatDate } from "../utils/date";
+import { findNearestCity } from "../utils/location";
+
 import {
   MapPin,
   CalendarDays,
@@ -7,13 +12,16 @@ import {
   Home,
   ArrowPath,
 } from "../assets/icons";
+
 import "./SectionHeader.scss";
-import { mockCities, mockRecentCities } from "../data/mockData";
+import { POPULAR_CITIES } from "../data/popularCities";
 import type { City } from "../types/weather";
 
 type SectionHeaderProps = {
   currentCity: City;
+  selectedDay: string;
   onCityChange: (city: City) => void;
+  recentCities: City[];
 };
 
 /**
@@ -22,20 +30,22 @@ type SectionHeaderProps = {
  */
 export const SectionHeader = ({
   currentCity,
+  selectedDay,
   onCityChange,
+  recentCities,
 }: SectionHeaderProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isSearching = searchQuery.trim().length > 0;
 
-  const filteredCities = mockCities.filter(
-    (city) =>
-      city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      city.country.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const debouncedQuery = useDebounce(searchQuery, 300);
+  const { results: filteredCities, loading: isSearchLoading } =
+    useCitySearch(debouncedQuery);
+
+  const isLoading = isSearching && isSearchLoading;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,31 +61,6 @@ export const SectionHeader = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    if (!isSearching) return;
-
-    // TODO: Replace mock loading with debounced API search
-
-    setIsLoading(true);
-
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [searchQuery, isSearching]);
-
-  const formatDate = (
-    date: Date = new Date(),
-    locale: string | undefined = undefined
-  ) => {
-    return new Intl.DateTimeFormat(locale, {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-    }).format(date);
-  };
-
   const handleCitySelect = (city: City) => {
     onCityChange(city);
     setIsDropdownOpen(false);
@@ -83,8 +68,35 @@ export const SectionHeader = ({
   };
 
   const handleUseCurrentLocation = () => {
-    // TODO
-    console.log("Use current location clicked");
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        const nearestCity = await findNearestCity(latitude, longitude);
+
+        if (nearestCity) {
+          handleCitySelect(nearestCity);
+          localStorage.setItem("lastCity", JSON.stringify(nearestCity));
+        } else {
+          alert("Could not find a nearby city.");
+        }
+      },
+      (error) => {
+        console.error(error);
+        if (error.code === error.PERMISSION_DENIED) {
+          alert(
+            "Location access was denied. Please enable location permissions in your browser settings to use this feature."
+          );
+        } else {
+          alert("Unable to retrieve your location.");
+        }
+      }
+    );
   };
 
   return (
@@ -139,12 +151,12 @@ export const SectionHeader = ({
                   </div>
 
                   {/* Last searched */}
-                  {mockRecentCities.length > 0 && (
+                  {recentCities.length > 0 && (
                     <div className="dropdown-section-header">
                       <div className="dropdown-section-title">
                         Last searched
                       </div>
-                      {mockRecentCities.map((city) => (
+                      {recentCities.map((city) => (
                         <button
                           key={city.id}
                           className="dropdown-item"
@@ -162,32 +174,32 @@ export const SectionHeader = ({
               )}
 
               {/* Search results */}
-              {isSearching && (
-                <>
-                  {isLoading ? (
-                    <div className="dropdown-section-header">
-                      <div className="dropdown-loading">Loading</div>
+              {isSearching ? (
+                isLoading ? (
+                  <div className="dropdown-section-header">
+                    <div className="dropdown-loading">
+                      <span className="spinner" />
+                      <span>Searching</span>
                     </div>
-                  ) : filteredCities.length > 0 ? (
-                    filteredCities.map((city) => (
-                      <div className="dropdown-section-header">
-                        <button
-                          key={city.id}
-                          className="dropdown-item"
-                          onClick={() => handleCitySelect(city)}
-                        >
-                          <MapPin className="icons-sm" />
-                          <span>
-                            {city.name}, {city.country}
-                          </span>
-                        </button>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="dropdown-empty">No results found</div>
-                  )}
-                </>
-              )}
+                  </div>
+                ) : filteredCities.length > 0 ? (
+                  filteredCities.map((city) => (
+                    <div key={city.id} className="dropdown-section-header">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => handleCitySelect(city)}
+                      >
+                        <MapPin className="icons-sm" />
+                        <span>
+                          {city.name}, {city.country}
+                        </span>
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <div className="dropdown-empty">No results found</div>
+                )
+              ) : null}
 
               {/* Default popular locations */}
               {!isSearching && (
@@ -195,7 +207,7 @@ export const SectionHeader = ({
                   <div className="dropdown-section-title">
                     Popular locations
                   </div>
-                  {mockCities.map((city) => (
+                  {POPULAR_CITIES.map((city) => (
                     <button
                       key={city.id}
                       className="dropdown-item"
@@ -216,7 +228,17 @@ export const SectionHeader = ({
 
       <div className="date-info">
         <CalendarDays className="icons-xl" />
-        <span className="date-text">{formatDate()}</span>
+        <span className="date-text">
+          <span className="date-text">
+            {selectedDay
+              ? formatDate(selectedDay, {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                })
+              : ""}
+          </span>
+        </span>
       </div>
     </div>
   );

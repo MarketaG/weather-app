@@ -1,11 +1,19 @@
+import { formatDate } from "../utils/date";
+
 import { WeatherIcon } from "./ui/WeatherIcon";
 import "./ForecastSidebar.scss";
-import type { Weather } from "../types/weather";
+
+type DailyForecastItem = {
+  date: string; // YYYY-MM-DD
+  avgTemp: number;
+  icon: string;
+  description: string;
+};
 
 type ForecastSidebarProps = {
-  forecasts: Weather[];
-  selectedDay: number;
-  onDaySelect: (id: number) => void;
+  days: DailyForecastItem[];
+  selectedDay: string | null;
+  onDaySelect: (date: string) => void;
 };
 
 /**
@@ -13,47 +21,32 @@ type ForecastSidebarProps = {
  * Sidebar component displaying a 5-day weather forecast list.
  */
 export const ForecastSidebar = ({
-  forecasts,
+  days,
   selectedDay,
   onDaySelect,
 }: ForecastSidebarProps) => {
-  const formatDate = (date: number | Date = new Date()) => {
-    const d = typeof date === "number" ? new Date(date * 1000) : date;
-
-    return new Intl.DateTimeFormat(navigator.language, {
-      weekday: "long",
-    }).format(d);
-  };
-
   return (
     <section className="forecast-sidebar-card">
       <ul className="forecast-list">
-        {forecasts.map((forecast) => (
-          <li key={forecast.dt} className="forecast-list-item">
+        {days.map((day) => (
+          <li key={day.date} className="forecast-list-item">
             <button
-              className={`forecast-item ${
-                selectedDay === forecast.dt ? "active" : ""
-              }`}
-              onClick={() => onDaySelect(forecast.dt)}
               type="button"
+              className={`forecast-item ${
+                selectedDay === day.date ? "active" : ""
+              }`}
+              onClick={() => onDaySelect(day.date)}
             >
-              <WeatherIcon
-                condition={forecast.weather[0].main}
-                iconCode={forecast.weather[0].icon}
-              />
+              <WeatherIcon condition={day.description} iconCode={day.icon} />
 
               <span className="forecast-info">
                 <span className="forecast-day capitalize">
-                  {formatDate(forecast.dt)}
+                  {formatDate(day.date, { weekday: "long" })}
                 </span>
-                <span className="forecast-description">
-                  {forecast.weather[0].description}
-                </span>
+                <span className="forecast-description">{day.description}</span>
               </span>
 
-              <span className="forecast-temp">
-                {Math.round(forecast.main.temp - 273.15)}°C
-              </span>
+              <span className="forecast-temp">{Math.round(day.avgTemp)}°C</span>
             </button>
           </li>
         ))}

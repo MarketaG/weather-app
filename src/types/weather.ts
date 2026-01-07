@@ -1,14 +1,9 @@
-export type CityCoord = {
-  lon: number;
-  lat: number;
-};
-
 export type City = {
   id: number;
   name: string;
-  state: string;
+  state?: string;
   country: string;
-  coord: CityCoord;
+  coord: { lat: number; lon: number };
 };
 
 export type Weather = {
@@ -33,21 +28,56 @@ export type Weather = {
   };
 };
 
-export type WeatherCondition =
-  | "Clear"
-  | "Clouds"
-  | "Rain"
-  | "Drizzle"
-  | "Thunderstorm"
-  | "Snow"
-  | "Mist"
-  | "Fog"
-  | "Haze";
-
 export type HourlyTemperaturePoint = {
   dt: number; // UNIX timestamp (UTC)
   dt_txt: string; // "YYYY-MM-DD HH:MM:SS"
   main: {
     temp: number; // °C
   };
+};
+
+export type ForecastItem = {
+  dt: number;
+  dt_txt: string;
+
+  main: {
+    temp: number;
+    humidity: number;
+  };
+
+  weather: Array<{
+    main: string;
+    description: string;
+    icon: string;
+  }>;
+
+  wind: {
+    speed: number;
+  };
+};
+
+export type ForecastCity = {
+  name: string;
+  sunrise: number;
+  sunset: number;
+
+  coord: {
+    lat: number;
+    lon: number;
+  };
+  timezone: number;
+};
+
+export type ForecastResponse = {
+  city: ForecastCity;
+  list: ForecastItem[];
+};
+
+export type DailyForecast = {
+  date: string; // YYYY-MM-DD
+  avgTemp: number;
+  humidity: number;
+  wind: number;
+  icon: string;
+  description: string;
 };
