@@ -1,41 +1,33 @@
 export async function fetchForecast(city: string) {
-  const netlifyEndpoint = import.meta.env.VITE_NETLIFY_FORECAST_ENDPOINT;
-
-  // PROD (Netlify) – API key is not available in Vite
+  // PROD – Netlify Function
   if (!import.meta.env.VITE_OPENWEATHER_API_KEY) {
-    if (!netlifyEndpoint) {
-      throw new Error("Netlify forecast endpoint is not configured.");
+    const endpoint = import.meta.env.VITE_FORECAST_FUNCTION_URL;
+
+    if (!endpoint) {
+      throw new Error("Forecast Netlify function endpoint is not configured.");
     }
 
-    const res = await fetch(
-      `${netlifyEndpoint}?city=${encodeURIComponent(city)}`
-    );
+    const res = await fetch(`${endpoint}?city=${encodeURIComponent(city)}`);
 
     if (!res.ok) {
+      const text = await res.text();
+      console.error("[fetchForecast][netlify]", text);
       throw new Error("Failed to fetch forecast from Netlify function");
     }
 
     return res.json();
   }
 
-  // LOCAL – direct call to OpenWeather
+  // LOCAL – OpenWeather
   const forecastUrl = import.meta.env.VITE_OPENWEATHER_FORECAST_URL;
   const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
-  if (!forecastUrl || !apiKey) {
-    throw new Error("OpenWeather API is not configured. See .env.example.");
-  }
-
-  const url = `${forecastUrl}?q=${encodeURIComponent(
-    city
-  )}&appid=${apiKey}&units=metric`;
-
-  const res = await fetch(url);
+  const res = await fetch(
+    `${forecastUrl}?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`
+  );
 
   if (!res.ok) {
-    const text = await res.text();
-    console.error("[fetchForecast] API response error:", text);
-    throw new Error(`Failed to fetch forecast for "${city}"`);
+    throw new Error("Failed to fetch forecast from OpenWeather");
   }
 
   return res.json();
