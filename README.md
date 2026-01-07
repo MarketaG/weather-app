@@ -1,4 +1,4 @@
-# Weather App
+# Weather Flow App
 
 The application provides weather forecast data based on user input or current location.
 Data is retrieved from the OpenWeather API and processed for multiple presentation layers.
@@ -118,6 +118,8 @@ The application was tested primarily in **Google Chrome (latest version)**.
 
 Other modern browsers based on Chromium (e.g. Edge) or Firefox are expected to work correctly, but have not been explicitly tested.
 
+---
+
 ## Installation
 
 Clone the repository and install dependencies:
@@ -127,8 +129,6 @@ git clone https://github.com/MarketaG/weather-app.git
 cd weather-app
 npm install
 ```
-
----
 
 ## Environment Variables
 
@@ -146,8 +146,6 @@ _Variables prefixed with `VITE_` are bundled into the client by Vite,
 so the API key is public by design and must be restricted by domain.\_
 
 _Production setup lives in a separate branch._
-
----
 
 ## Running the Project (Development)
 
