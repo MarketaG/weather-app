@@ -14,6 +14,8 @@ import { WeatherMain } from "./components/WeatherMain";
 import { ForecastSidebar } from "./components/ForecastSidebar";
 import { HourlyChart } from "./components/HourlyChart";
 import { Footer } from "./components/Footer";
+import { ForecastSidebarSkeleton } from "./components/ui/skeletons/ForecastSidebarSkeleton";
+import { HourlyChartSkeleton } from "./components/ui/skeletons/HourlyChartSkeleton";
 
 import { DEFAULT_CITY } from "./data/defaultCity";
 import type { City, DailyForecast } from "./types/weather";
@@ -121,16 +123,24 @@ function App() {
             </section>
 
             <aside className="forecast-sidebar">
-              <ForecastSidebar
-                days={forecastDays}
-                selectedDay={activeDay ?? null}
-                onDaySelect={handleDaySelect}
-              />
+              {isForecastLoading ? (
+                <ForecastSidebarSkeleton />
+              ) : (
+                <ForecastSidebar
+                  days={forecastDays}
+                  selectedDay={activeDay ?? null}
+                  onDaySelect={handleDaySelect}
+                />
+              )}
             </aside>
 
             <section className="hourly-chart">
-              {hourlyDayData.length > 0 && (
-                <HourlyChart dayData={hourlyDayData} />
+              {isForecastLoading ? (
+                <HourlyChartSkeleton />
+              ) : (
+                hourlyDayData.length > 0 && (
+                  <HourlyChart dayData={hourlyDayData} />
+                )
               )}
             </section>
           </div>

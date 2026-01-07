@@ -177,7 +177,10 @@ export const SectionHeader = ({
               {isSearching ? (
                 isLoading ? (
                   <div className="dropdown-section-header">
-                    <div className="dropdown-loading">Loading</div>
+                    <div className="dropdown-loading">
+                      <span className="spinner" />
+                      <span>Searching</span>
+                    </div>
                   </div>
                 ) : filteredCities.length > 0 ? (
                   filteredCities.map((city) => (

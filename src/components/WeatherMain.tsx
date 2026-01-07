@@ -5,6 +5,7 @@ import {
   SunriseIcon,
   SunsetIcon,
 } from "../assets/icons";
+import { WeatherMainSkeleton } from "./ui/skeletons/WeatherMainSkeleton";
 import { formatTime } from "../utils/date";
 import "./WeatherMain.scss";
 
@@ -31,7 +32,11 @@ type WeatherMainProps = {
  */
 export const WeatherMain = ({ day, loading }: WeatherMainProps) => {
   if (loading) {
-    return <div className="weather-main-card">Loading...</div>; // TODO
+    return (
+      <div className="weather-main-card">
+        <WeatherMainSkeleton />
+      </div>
+    ); // TODO
   }
 
   if (!day) {
