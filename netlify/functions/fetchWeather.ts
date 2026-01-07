@@ -7,7 +7,7 @@ const handler: NetlifyHandler = async (event) => {
     return { statusCode: 400, body: "City is required" };
   }
 
-  const baseUrl = process.env.OPENWEATHER_BASE_URL!;
+  const baseUrl = process.env.OPENWEATHER_FORECAST_URL!;
   const apiKey = process.env.OPENWEATHER_API_KEY!;
 
   const res = await fetch(
